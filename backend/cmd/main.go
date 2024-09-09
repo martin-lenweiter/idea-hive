@@ -2,7 +2,7 @@ package main
 
 import (
 	_ "github.com/lib/pq"
-	"idea-repository-backend/cmd/app"
+	"ideahive/backend/cmd/app"
 	"log"
 )
 

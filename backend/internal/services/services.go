@@ -1,8 +1,8 @@
 package services
 
 import (
-	"idea-repository-backend/internal/database"
-	"idea-repository-backend/internal/models"
+	"ideahive/backend/internal/database"
+	"ideahive/backend/internal/models"
 )
 
 type Services struct {

@@ -1,4 +1,4 @@
-module idea-repository-backend
+module ideahive/backend
 
 go 1.23
 

@@ -12,7 +12,8 @@ type Config struct {
 func Load() (*Config, error) {
 	return &Config{
 		ServerAddress: getEnv("SERVER_ADDRESS", ":8080"),
-		DatabaseURL:   getEnv("DATABASE_URL", "postgresql://dev_user:dev_password@localhost:5432/idea_repository_dev?sslmode=disable"),
+		DatabaseURL: getEnv("DATABASE_URL",
+			"postgresql://dev_user:dev_password@localhost:5432/ideahive_dev?sslmode=disable"),
 	}, nil
 }
 

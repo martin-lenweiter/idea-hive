@@ -1,17 +1,17 @@
 services:
   db:
     image: postgres:14
-    container_name: idea-repository-db
+    container_name: ideahive-db
     environment:
-      POSTGRES_DB: idea_repository_dev
+      POSTGRES_DB: ideahive_dev
       POSTGRES_USER: dev_user
       POSTGRES_PASSWORD: dev_password
     ports:
       - "5432:5432"
     volumes:
-      - idea_repository_data:/var/lib/postgresql/data
+      - ideahive_data:/var/lib/postgresql/data
     restart: unless-stopped
 
 volumes:
-  idea_repository_data:
-    name: idea_repository_data
+  ideahive_data:
+    name: ideahive_data

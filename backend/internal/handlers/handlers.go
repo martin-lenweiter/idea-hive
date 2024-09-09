@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
-	"idea-repository-backend/internal/services"
+	"ideahive/backend/internal/services"
 	"net/http"
 )
 

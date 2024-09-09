@@ -1,7 +1,7 @@
 package database
 
 import (
-	"idea-repository-backend/internal/models"
+	"ideahive/backend/internal/models"
 
 	"gorm.io/gorm"
 )

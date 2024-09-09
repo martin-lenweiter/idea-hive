@@ -1,7 +1,7 @@
 package app
 
 import (
-	"idea-repository-backend/internal/models"
+	"ideahive/backend/internal/models"
 	"net/http"
 
 	"gorm.io/driver/postgres"
@@ -9,11 +9,11 @@ import (
 	"github.com/go-chi/chi/v5"
 	"gorm.io/gorm"
 
-	"idea-repository-backend/config"
-	"idea-repository-backend/internal/database"
-	"idea-repository-backend/internal/handlers"
-	"idea-repository-backend/internal/middleware"
-	"idea-repository-backend/internal/services"
+	"ideahive/backend/config"
+	"ideahive/backend/internal/database"
+	"ideahive/backend/internal/handlers"
+	"ideahive/backend/internal/middleware"
+	"ideahive/backend/internal/services"
 )
 
 type App struct {
