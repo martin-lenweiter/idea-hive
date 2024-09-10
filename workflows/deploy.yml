@@ -1,4 +1,4 @@
-name: CI
+name: deploy
 
 on:
   push:
@@ -20,6 +20,7 @@ jobs:
 
   deploy:
     needs: test
+    runs-on: ubuntu-latest
     steps:
       # Step 1: Checkout the code
       - name: Checkout code
