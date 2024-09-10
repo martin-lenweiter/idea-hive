@@ -2,17 +2,21 @@ package testutil
 
 import (
 	"fmt"
+	"ideahive/backend/cmd/app"
+	"ideahive/backend/config"
+	"ideahive/backend/internal/database"
+	"log"
+	"net/http/httptest"
+
+	"github.com/go-chi/chi/v5"
 	"github.com/ory/dockertest/v3"
 	"github.com/ory/dockertest/v3/docker"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"idea-repository-backend/cmd/app"
-	"idea-repository-backend/config"
-	"idea-repository-backend/internal/database"
-	"log"
-	"net/http/httptest"
 
-	"idea-repository-backend/internal/models"
+	"ideahive/backend/internal/handlers"
+	"ideahive/backend/internal/models"
+	"ideahive/backend/internal/services"
 )
 
 var (
@@ -22,6 +26,28 @@ var (
 	TestServer *httptest.Server
 	TestApp    *app.App
 )
+
+func NewTestApp(cfg *config.Config, db *database.Database) (*app.App, error) {
+	// Initialize services
+	svc := services.New(db)
+
+	// Initialize handlers
+	h := handlers.New(svc)
+
+	// Set up router
+	router := chi.NewRouter()
+
+	testApp := &app.App{
+		Config:   cfg,
+		DB:       db.GormDB,
+		Router:   router,
+		Handlers: h,
+	}
+
+	testApp.Routes()
+
+	return testApp, nil
+}
 
 func SetupTestEnvironment() error {
 	var err error
@@ -42,7 +68,7 @@ func SetupTestEnvironment() error {
 	dbInstance := &database.Database{GormDB: TestDB}
 
 	// Initialize the App with test configurations
-	TestApp, err = app.NewAppWithDependencies(mockConfig, dbInstance)
+	TestApp, err = NewTestApp(mockConfig, dbInstance)
 	if err != nil {
 		return err
 	}

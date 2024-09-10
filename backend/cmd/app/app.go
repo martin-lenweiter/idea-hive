@@ -55,37 +55,33 @@ func NewApp() (*App, error) {
 		Handlers: h,
 	}
 
-	app.routes()
+	app.Routes()
 
 	return app, nil
 }
 
-func NewAppWithDependencies(cfg *config.Config, db *database.Database) (*App, error) {
-	// Initialize services
-	svc := services.New(db)
-
-	// Initialize handlers
-	h := handlers.New(svc)
-
-	// Set up router
-	router := chi.NewRouter()
-
-	app := &App{
-		Config:   cfg,
-		DB:       db.GormDB,
-		Router:   router,
-		Handlers: h,
-	}
-
-	app.routes()
-
-	return app, nil
-}
-
-func (a *App) routes() {
+func (a *App) Routes() {
+	// Middleware
 	a.Router.Use(middleware.EnableCors)
-	a.Router.Post("/ideas", a.Handlers.CreateIdeaHandler)
-	// Add more routes here
+
+	// API Routes (move this before the static file server)
+	a.Router.Route("/api", func(r chi.Router) {
+		routeApi(r, a.Handlers)
+	})
+
+	// Static file server
+	fileServer := http.FileServer(http.Dir("./public"))
+	a.Router.Handle("/*", fileServer)
+
+	// Index handler
+	a.Router.Get("/", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "./static/index.html")
+	})
+}
+
+func routeApi(r chi.Router, handlers *handlers.Handlers) {
+	r.Post("/ideas", handlers.CreateIdeaHandler)
+	// Add more API Routes here
 }
 
 func (a *App) Serve() error {

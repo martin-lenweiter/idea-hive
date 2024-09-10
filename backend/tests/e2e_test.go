@@ -7,8 +7,8 @@ import (
 	"net/http"
 	"testing"
 
-	"idea-repository-backend/internal/models"
-	"idea-repository-backend/tests/testutil"
+	"ideahive/backend/internal/models"
+	"ideahive/backend/tests/testutil"
 )
 
 func TestCreateIdea(t *testing.T) {
@@ -31,7 +31,8 @@ func TestCreateIdea(t *testing.T) {
 	}
 
 	// Create a new request
-	req, err := http.NewRequest("POST", testutil.TestServer.URL+"/ideas", bytes.NewBuffer(payload))
+	req, err := http.NewRequest("POST", testutil.TestServer.URL+"/api/ideas",
+		bytes.NewBuffer(payload))
 	if err != nil {
 		t.Fatalf("Failed to create request: %v", err)
 	}
