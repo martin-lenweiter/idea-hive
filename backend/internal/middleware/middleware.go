@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"log"
 	"net/http"
 	"os"
 
@@ -24,6 +25,8 @@ func CorsMiddleware() func(http.Handler) http.Handler {
 
 func ForceSSL(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		log.Println("ENV", os.Getenv("ENV"))
+		log.Println("X-Forwarded-Proto", r.Header.Get("X-Forwarded-Proto"))
 		if os.Getenv("ENV") == "production" && r.Header.Get("X-Forwarded-Proto") != "https" {
 			// Redirect to HTTPS in production
 			http.Redirect(w, r, "https://"+r.Host+r.RequestURI, http.StatusMovedPermanently)
