@@ -22,7 +22,7 @@ jobs:
           cd backend
           go test -v ./...
 
-  deploy:
+  build_and_deploy:
     needs: test
     runs-on: ubuntu-latest
     steps:
@@ -30,46 +30,23 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Step 2: Set up Node.js environment (for frontend)
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16'  # Adjust for your project's Node.js version
-
-      # Step 3: Build React frontend
-      - name: Build React frontend
-        env:
-          REACT_APP_BASE_URL: ${{ secrets.REACT_APP_BASE_URL }}
+      # Step 2: Build Docker image (frontend + backend)
+      - name: Build Docker image
         run: |
-          cd frontend
-          npm install
-          npm install --save-dev @babel/plugin-proposal-private-property-in-object
-          npm run build
-          # Move build files to a folder that Go can serve
-          mv build ../backend/public
+          docker build -t myapp:latest .
 
-      # Step 4: Set up Go environment
-      - name: Set up Go
-        uses: actions/setup-go@v4
-        with:
-          go-version: '1.23'  # Adjust for your Go version
-
-      # Step 5: Build Go backend
-      - name: Build Go backend
-        run: |
-          cd backend
-          go build -o main ./cmd
-      # Step 6: Install Heroku CLI
+      # Step 3: Install Heroku CLI
       - name: Install Heroku CLI
         run: |
           curl https://cli-assets.heroku.com/install.sh | sh
 
+      # Step 4: Deploy to Heroku using Docker
       - name: Deploy to Heroku
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
           HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
         run: |
-          cd backend
-          heroku container:login
-          heroku container:push web -a $HEROKU_APP_NAME
-          heroku container:release web -a $HEROKU_APP_NAME
+          docker login --username=_ --password=$HEROKU_API_KEY registry.heroku.com
+          docker tag myapp:latest registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web
+          docker push registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web
+          heroku container:release web -a ${{ secrets.HEROKU_APP_NAME }}
