@@ -2,7 +2,7 @@ name: deploy
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   test:
@@ -30,20 +30,23 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Step 2: Build Docker image (frontend + backend)
-      - name: Build Docker image
-        run: |
-          docker build -t myapp:latest .
-
-      # Step 3: Install Heroku CLI
+      # Step 2: Install Heroku CLI
       - name: Install Heroku CLI
         run: |
           curl https://cli-assets.heroku.com/install.sh | sh
 
-      # Step 4: Set Heroku Stack to Container
+      # Step 3: Set Heroku Stack to Container (this step is crucial)
       - name: Set Heroku stack to container
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+          HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
         run: |
           heroku stack:set container -a ${{ secrets.HEROKU_APP_NAME }}
+
+      # Step 4: Build Docker image (frontend + backend)
+      - name: Build Docker image
+        run: |
+          docker build -t myapp:latest .
 
       # Step 5: Deploy to Heroku using Docker
       - name: Deploy to Heroku
