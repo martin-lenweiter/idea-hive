@@ -58,8 +58,7 @@ jobs:
       - name: Build Go backend
         run: |
           cd backend
-          go build -o main
-
+          go build -o main ./cmd
       # Step 6: Install Heroku CLI
       - name: Install Heroku CLI
         run: |
