@@ -25,9 +25,8 @@ func CorsMiddleware() func(http.Handler) http.Handler {
 
 func ForceSSL(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		log.Println("ENV", os.Getenv("ENV"))
+		log.Println("ENVIRONMENT", os.Getenv("ENVIRONMENT"))
 		log.Println("X-Forwarded-Proto", r.Header.Get("X-Forwarded-Proto"))
-		log.Println("All Environment Variables:", os.Environ())
 		for name, values := range r.Header {
 			for _, value := range values {
 				log.Printf("%s: %s\n", name, value)

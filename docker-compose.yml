@@ -31,7 +31,7 @@ services:
       - db
     environment:
       DATABASE_URL: postgres://dev_user:dev_password@db:5432/ideahive_dev?sslmode=disable
-      ENV: development
+      ENVIRONMENT: development
 
 volumes:
   ideahive_data:
