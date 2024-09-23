@@ -35,6 +35,7 @@ func ForceSSL(next http.Handler) http.Handler {
 
 		if os.Getenv("ENV") == "production" && r.Header.Get("X-Forwarded-Proto") != "https" {
 			// Redirect to HTTPS in production
+			log.Println("Redirecting to HTTPS")
 			http.Redirect(w, r, "https://"+r.Host+r.RequestURI, http.StatusMovedPermanently)
 			return
 		}
