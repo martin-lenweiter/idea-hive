@@ -65,18 +65,17 @@ func (a *App) Routes() {
 	// Middleware
 	a.Router.Use(middleware.EnableCors)
 
-	// API Routes (move this before the static file server)
+	// API Routes
 	a.Router.Route("/api", func(r chi.Router) {
 		routeApi(r, a.Handlers)
 	})
 
-	// Static file server
-	fileServer := http.FileServer(http.Dir("./public"))
-	a.Router.Handle("/*", fileServer)
+	// Serve static files
+	a.Router.Handle("/static/*", http.StripPrefix("/static/", http.FileServer(http.Dir("/root/public/static"))))
 
-	// Index handler
-	a.Router.Get("/", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "./static/index.html")
+	// Serve index.html for all other routes
+	a.Router.Get("/*", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "/root/public/index.html")
 	})
 }
 

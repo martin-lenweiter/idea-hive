@@ -1,10 +1,9 @@
 package config
 
 import (
+	"fmt"
 	"log"
 	"os"
-
-	"github.com/joho/godotenv"
 )
 
 type Config struct {
@@ -13,23 +12,23 @@ type Config struct {
 }
 
 func Load() (*Config, error) {
-	err := godotenv.Load() // Load .env file
-	// log.Println name of environment variable and its value
-	log.Println("ENVIRONMENT:", os.Getenv("ENVIRONMENT"))
-	if err != nil {
-		log.Println("Error loading .env file")
-	}
+	dbHost := os.Getenv("DB_HOST")
+	dbPort := os.Getenv("DB_PORT")
+	dbUser := os.Getenv("DB_USER")
+	dbPassword := os.Getenv("DB_PASSWORD")
+	dbName := os.Getenv("DB_NAME")
 
-	var dbURL, serverAddress string
+	dbURL := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable",
+		dbUser, dbPassword, dbHost, dbPort, dbName)
 
-	dbURL = os.Getenv("DATABASE_URL")
+	log.Println("DB_URL:", dbURL)
+
 	port := os.Getenv("PORT")
-
-	if dbURL == "" || port == "" {
-		log.Fatal("Missing DATABASE_URL or PORT environment variables")
+	if port == "" {
+		port = "8080"
 	}
 
-	serverAddress = ":" + port
+	serverAddress := ":" + port
 
 	return &Config{
 		ServerAddress: serverAddress,
