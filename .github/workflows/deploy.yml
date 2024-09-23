@@ -16,7 +16,9 @@ jobs:
       - name: Install dependencies
         run: go mod download
       - name: Run tests
-        run: go test -v ./...
+        run: |
+          cd backend
+          go test -v ./...
 
   deploy:
     needs: test
