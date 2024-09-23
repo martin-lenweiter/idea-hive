@@ -2,6 +2,7 @@ package app
 
 import (
 	"ideahive/backend/internal/models"
+	"log"
 	"net/http"
 
 	"gorm.io/driver/postgres"
@@ -85,6 +86,7 @@ func routeApi(r chi.Router, handlers *handlers.Handlers) {
 }
 
 func (a *App) Serve() error {
+	log.Printf("Starting server on %s", a.Config.ServerAddress)
 	return http.ListenAndServe(a.Config.ServerAddress, a.Router)
 }
 

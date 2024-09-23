@@ -1,7 +1,10 @@
 package config
 
 import (
+	"log"
 	"os"
+
+	"github.com/joho/godotenv"
 )
 
 type Config struct {
@@ -10,16 +13,26 @@ type Config struct {
 }
 
 func Load() (*Config, error) {
-	return &Config{
-		ServerAddress: getEnv("SERVER_ADDRESS", ":8080"),
-		DatabaseURL: getEnv("DATABASE_URL",
-			"postgresql://dev_user:dev_password@localhost:5432/ideahive_dev?sslmode=disable"),
-	}, nil
-}
-
-func getEnv(key, fallback string) string {
-	if value, ok := os.LookupEnv(key); ok {
-		return value
+	err := godotenv.Load() // Load .env file
+	// log.Println name of environment variable and its value
+	log.Println("ENVIRONMENT:", os.Getenv("ENVIRONMENT"))
+	if err != nil {
+		log.Println("Error loading .env file")
 	}
-	return fallback
+
+	var dbURL, serverAddress string
+
+	dbURL = os.Getenv("DATABASE_URL")
+	port := os.Getenv("PORT")
+
+	if dbURL == "" || port == "" {
+		log.Fatal("Missing DATABASE_URL or PORT environment variables")
+	}
+
+	serverAddress = ":" + port
+
+	return &Config{
+		ServerAddress: serverAddress,
+		DatabaseURL:   dbURL,
+	}, nil
 }

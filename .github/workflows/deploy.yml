@@ -34,6 +34,8 @@ jobs:
 
       # Step 3: Build React frontend
       - name: Build React frontend
+        env:
+          REACT_APP_BASE_URL: ${{ secrets.REACT_APP_BASE_URL }}
         run: |
           cd frontend
           npm install
@@ -58,7 +60,6 @@ jobs:
         run: |
           curl https://cli-assets.heroku.com/install.sh | sh
 
-      # Step 7: Deploy to Heroku
       - name: Deploy to Heroku
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
@@ -67,7 +68,7 @@ jobs:
           cd backend
           git init
           heroku git:remote -a $HEROKU_APP_NAME
+
           git add .
           git commit -m "Deploy backend and frontend"
           git push -f heroku HEAD:main
-      
