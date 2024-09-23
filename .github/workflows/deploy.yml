@@ -7,6 +7,8 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      ENVIRONMENT: production
     steps:
       - uses: actions/checkout@v4
       - name: Set up Go
