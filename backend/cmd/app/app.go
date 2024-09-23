@@ -63,8 +63,8 @@ func NewApp() (*App, error) {
 
 func (a *App) Routes() {
 	// Middleware
-	a.Router.Use(middleware.EnableCors)
-	//a.Router.Use(middleware.ForceSSL)
+	a.Router.Use(middleware.CorsMiddleware())
+	a.Router.Use(middleware.ForceSSL)
 
 	// API Routes
 	a.Router.Route("/api", func(r chi.Router) {

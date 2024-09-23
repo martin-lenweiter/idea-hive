@@ -1,31 +1,34 @@
 package middleware
 
-import "net/http"
+import (
+	"net/http"
+	"os"
 
-func EnableCors(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// Allow requests from the React app (localhost:3000)
-		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
-		w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+	"github.com/go-chi/cors"
+)
 
-		// Handle preflight requests (OPTIONS method)
-		if r.Method == "OPTIONS" {
-			w.WriteHeader(http.StatusOK)
-			return
-		}
-
-		next.ServeHTTP(w, r)
+func CorsMiddleware() func(http.Handler) http.Handler {
+	return cors.Handler(cors.Options{
+		AllowedOrigins: []string{"https://your-production-domain.com"}, // Production domain
+		AllowOriginFunc: func(r *http.Request, origin string) bool {
+			// Allow localhost in development
+			return origin == "http://localhost:3000" || origin == "http://127.0.0.1:3000"
+		},
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
+		ExposedHeaders:   []string{"Link"},
+		AllowCredentials: true,
+		MaxAge:           300, // Maximum value for Access-Control-Max-Age
 	})
 }
 
 func ForceSSL(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// Check if the request is not using HTTPS
-		if r.URL.Scheme != "https" {
-			// Redirect to the HTTPS version of the URL
-			http.Redirect(w, r, "https://"+r.Host+r.URL.Path, http.StatusMovedPermanently)
+		if os.Getenv("ENV") == "production" && r.Header.Get("X-Forwarded-Proto") != "https" {
+			// Redirect to HTTPS in production
+			http.Redirect(w, r, "https://"+r.Host+r.RequestURI, http.StatusMovedPermanently)
 			return
 		}
+		next.ServeHTTP(w, r) // Continue for local development
 	})
 }
