@@ -44,10 +44,6 @@ jobs:
           cd frontend
           npm install
           npm install --save-dev @babel/plugin-proposal-private-property-in-object
-          # Fix ESLint warnings
-          sed -i '/import axios/d' src/components/IdeaForm.tsx
-          sed -i '/import reportWebVitals/d' src/index.tsx
-          sed -i '/reportWebVitals()/d' src/index.tsx
           npm run build
           # Move build files to a folder that Go can serve
           mv build ../backend/public

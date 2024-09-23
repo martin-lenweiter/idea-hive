@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { TextField, Button, Container, Typography, Box } from '@mui/material';
-import axios from 'axios';
 import { createIdea } from '../api/endpoints/ideas';
 
 const IdeaForm: React.FC = () => {
