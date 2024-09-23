@@ -70,9 +70,6 @@ jobs:
           HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
         run: |
           cd backend
-          git config --global user.email "martinlenweiter@protonmail.com"
-          git config --global user.name "Martin Lenweiter"
-          git add .
-          git commit -m "Deploy backend and frontend"
-          heroku git:remote -a $HEROKU_APP_NAME
-          git push heroku HEAD:main
+          heroku container:login
+          heroku container:push web -a $HEROKU_APP_NAME
+          heroku container:release web -a $HEROKU_APP_NAME
