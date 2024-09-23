@@ -3,6 +3,6 @@ frontend/node_modules/
 .DS_Store
 .idea/
 .vscode/
-.env
+/backend/.env
 /backend/main
 /frontend/build

@@ -30,11 +30,7 @@ services:
     depends_on:
       - db
     environment:
-      - DB_HOST=db
-      - DB_PORT=5432
-      - DB_USER=dev_user
-      - DB_PASSWORD=dev_password
-      - DB_NAME=ideahive_dev
+      DATABASE_URL: postgres://dev_user:dev_password@db:5432/ideahive_dev?sslmode=disable
 
 volumes:
   ideahive_data:
