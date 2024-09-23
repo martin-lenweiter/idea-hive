@@ -18,3 +18,14 @@ func EnableCors(next http.Handler) http.Handler {
 		next.ServeHTTP(w, r)
 	})
 }
+
+func ForceSSL(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// Check if the request is not using HTTPS
+		if r.URL.Scheme != "https" {
+			// Redirect to the HTTPS version of the URL
+			http.Redirect(w, r, "https://"+r.Host+r.URL.Path, http.StatusMovedPermanently)
+			return
+		}
+	})
+}
