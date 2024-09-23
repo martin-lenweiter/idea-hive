@@ -40,7 +40,12 @@ jobs:
         run: |
           curl https://cli-assets.heroku.com/install.sh | sh
 
-      # Step 4: Deploy to Heroku using Docker
+      # Step 4: Set Heroku Stack to Container
+      - name: Set Heroku stack to container
+        run: |
+          heroku stack:set container -a ${{ secrets.HEROKU_APP_NAME }}
+
+      # Step 5: Deploy to Heroku using Docker
       - name: Deploy to Heroku
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
@@ -50,3 +55,7 @@ jobs:
           docker tag myapp:latest registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web
           docker push registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web
           heroku container:release web -a ${{ secrets.HEROKU_APP_NAME }}
+
+      # Optional: Clean up Docker images
+      - name: Clean up Docker images
+        run: docker rmi myapp:latest
