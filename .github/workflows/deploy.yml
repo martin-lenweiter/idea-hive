@@ -8,7 +8,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
@@ -28,7 +28,7 @@ jobs:
     steps:
       # Step 1: Checkout the code
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Step 2: Set up Node.js environment (for frontend)
       - name: Set up Node.js
@@ -43,6 +43,11 @@ jobs:
         run: |
           cd frontend
           npm install
+          npm install --save-dev @babel/plugin-proposal-private-property-in-object
+          # Fix ESLint warnings
+          sed -i '/import axios/d' src/components/IdeaForm.tsx
+          sed -i '/import reportWebVitals/d' src/index.tsx
+          sed -i '/reportWebVitals()/d' src/index.tsx
           npm run build
           # Move build files to a folder that Go can serve
           mv build ../backend/public
