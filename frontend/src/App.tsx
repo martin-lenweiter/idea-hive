@@ -5,7 +5,7 @@ import { CssBaseline } from '@mui/material';
 import theme from './theme';
 import Header from './components/Header';
 import IdeaForm from './components/IdeaForm';
-import Manifesto from './components/Manifesto';
+import Manifesto from './pages/Manifesto';
 
 const App: React.FC = () => {
   return (

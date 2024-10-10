@@ -35,7 +35,7 @@ const IdeaForm: React.FC = () => {
   };
 
   return (
-    <Container>
+    <Container sx={{ paddingTop: 4 }}>
       <Typography variant="h4" gutterBottom>
         Submit an Idea
       </Typography>

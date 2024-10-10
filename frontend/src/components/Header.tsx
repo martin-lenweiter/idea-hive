@@ -1,14 +1,18 @@
 import React from 'react';
-import { AppBar, Toolbar, Typography, Button } from '@mui/material';
+import { AppBar, Toolbar, Typography, Button, Box } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
+import logo from '../logo.png';
 
 const Header: React.FC = () => {
   return (
-    <AppBar position="static">
+    <AppBar position="static" sx={{ backgroundColor: '#30253f' }}>
       <Toolbar>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          IdeaHive
-        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
+          <img src={logo} alt="IdeaHive Logo" style={{ height: '60px', marginRight: '10px' }} />
+          <Typography variant="h6" component="div">
+            IdeaHive
+          </Typography>
+        </Box>
         <Button color="inherit" component={RouterLink} to="/">
           Home
         </Button>

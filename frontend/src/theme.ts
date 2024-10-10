@@ -1,7 +1,10 @@
 import { createTheme } from '@mui/material/styles';
+import '@fontsource/inter'; // Add this import
 
 const theme = createTheme({
-  // You can customize your theme here
+  typography: {
+    fontFamily: 'Inter, sans-serif',
+  },
 });
 
 export default theme;
