@@ -9,7 +9,7 @@ const manifestoContent = `
 
 A good idea is essential for a great project, but execution is the real challenge, as anyone who has built something great will tell you.
 
-By sharing your ideas, you open yourself to the collective intelligence and new opportunities you might not have expected.
+Therefore, by sharing your ideas, you don't lose anything, but you might gain much. You open yourself to the collective intelligence and new opportunities you might not have expected might emerge.
 
 ## Why might you want to join the idea hive?
 
