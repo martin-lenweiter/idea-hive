@@ -11,9 +11,14 @@ type Config struct {
 }
 
 func Load() (*Config, error) {
-	dbURL := os.Getenv("DATABASE_URL")
+	log.Println("Loading configuration...")
 
-	log.Println("DB_URL:", dbURL)
+	for _, env := range os.Environ() {
+		log.Println(env)
+	}
+
+	dbURL := os.Getenv("DATABASE_URL")
+	log.Println("Database URL from env:", dbURL)
 
 	port := os.Getenv("PORT")
 	if port == "" {

@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { TextField, Button, Container, Typography, Box } from '@mui/material';
+import { useState } from 'react';
+import { TextInput, Textarea, Button, Container, Title, Box } from '@mantine/core';
 import { createIdea } from '../api/endpoints/ideas';
 
-const IdeaForm: React.FC = () => {
+const IdeaForm = () => {
   // Local state for form fields
   const [title, setTitle] = useState<string>('');
   const [description, setDescription] = useState<string>('');
@@ -35,34 +35,29 @@ const IdeaForm: React.FC = () => {
   };
 
   return (
-    <Container sx={{ paddingTop: 4 }}>
-      <Typography variant="h4" gutterBottom>
+    <Container size="sm" mt="xl">
+      <Title order={2} mb="md">
         Submit an Idea
-      </Typography>
+      </Title>
       <Box component="form" onSubmit={handleSubmit}>
-        <TextField
+        <TextInput
           label="Title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          fullWidth
           required
-          margin="normal"
+          mb="md"
         />
-        <TextField
+        <Textarea
           label="Description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          fullWidth
           required
-          multiline
-          rows={4}
-          margin="normal"
+          minRows={4}
+          mb="md"
         />
         <Button
           type="submit"
-          variant="contained"
-          color="primary"
-          disabled={loading}
+          loading={loading}
         >
           {loading ? 'Submitting...' : 'Submit'}
         </Button>
